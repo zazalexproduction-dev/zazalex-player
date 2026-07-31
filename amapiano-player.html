@@ -4,30 +4,35 @@
   <meta charset="utf-8">
   <title>ZaZaLex Amapiano Radio</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
+    html, body {
       margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
     }
+
     #player-box {
-      max-width: 320px;
-      margin: 0 auto;
+      width: 320px;
       background: #222;
       padding: 15px;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      box-sizing: border-box;
     }
+
     h2 {
       margin: 0 0 12px;
       font-size: 18px;
+      color: #fff;
+      text-align: center;
     }
+
     audio {
       width: 100%;
       margin-top: 8px;
     }
+
     #playlist {
       list-style: none;
       padding: 0;
@@ -36,6 +41,7 @@
       max-height: 220px;
       overflow-y: auto;
     }
+
     #playlist li {
       padding: 8px 10px;
       margin: 6px 0;
@@ -46,20 +52,26 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: #fff;
     }
+
     #playlist li:hover {
       background: #444;
     }
+
     #playlist li.active {
       background: #0a84ff;
     }
+
     #playlist::-webkit-scrollbar {
       width: 6px;
     }
+
     #playlist::-webkit-scrollbar-thumb {
       background: #555;
       border-radius: 3px;
     }
+
     #playlist::-webkit-scrollbar-track {
       background: #222;
     }
@@ -93,17 +105,12 @@
 
   const audio = document.getElementById('audio-player');
   const playlistEl = document.getElementById('playlist');
-
   let currentTrack = 0;
 
   function highlightTrack(index) {
     const items = playlistEl.querySelectorAll('li');
     items.forEach((li, i) => {
-      if (i === index) {
-        li.classList.add('active');
-      } else {
-        li.classList.remove('active');
-      }
+      li.classList.toggle('active', i === index);
     });
   }
 
@@ -117,9 +124,7 @@
   songs.forEach((song, index) => {
     const li = document.createElement('li');
     li.textContent = song.title;
-    li.addEventListener('click', () => {
-      loadTrack(index);
-    });
+    li.addEventListener('click', () => loadTrack(index));
     playlistEl.appendChild(li);
   });
 
