@@ -53,7 +53,6 @@
     #playlist li.active {
       background: #0a84ff;
     }
-    /* Custom scrollbar for playlist (optional, looks nicer) */
     #playlist::-webkit-scrollbar {
       width: 6px;
     }
@@ -71,15 +70,12 @@
 <div id="player-box">
   <h2>ZaZaLex Amapiano Radio</h2>
 
-  <!-- Player with always-visible volume bar -->
-  <audio id="audio-player" controls></audio>
+  <audio id="audio-player" controls controlsList="nodownload noplaybackrate"></audio>
 
-  <!-- Playlist -->
   <ul id="playlist"></ul>
 </div>
 
 <script>
-  // Your three tracks
   const songs = [
     {
       title: "01 - ZaZaLex Mix 09.29.2022",
@@ -100,11 +96,7 @@
 
   let currentTrack = 0;
 
-  function loadTrack(index) {
-    currentTrack = index;
-    audio.src = songs[index].url;
-    audio.play();
-
+  function highlightTrack(index) {
     const items = playlistEl.querySelectorAll('li');
     items.forEach((li, i) => {
       if (i === index) {
@@ -115,7 +107,13 @@
     });
   }
 
-  // Build playlist on the page
+  function loadTrack(index) {
+    currentTrack = index;
+    audio.src = songs[index].url;
+    audio.play();
+    highlightTrack(index);
+  }
+
   songs.forEach((song, index) => {
     const li = document.createElement('li');
     li.textContent = song.title;
@@ -125,14 +123,14 @@
     playlistEl.appendChild(li);
   });
 
-  // When a track ends, play the next one
   audio.addEventListener('ended', () => {
     if (currentTrack < songs.length - 1) {
       loadTrack(currentTrack + 1);
+    } else {
+      loadTrack(0);
     }
   });
 
-  // Load first track when page opens
   loadTrack(0);
 </script>
 
