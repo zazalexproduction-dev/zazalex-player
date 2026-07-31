@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ZaZaLex Amapiano Radio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+    #player-box {
+      max-width: 320px;
+      margin: 0 auto;
+      background: #222;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    }
+    h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+    audio {
+      width: 100%;
+      margin-top: 8px;
+    }
+    #playlist {
+      list-style: none;
+      padding: 0;
+      margin-top: 15px;
+      text-align: left;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    #playlist li {
+      padding: 8px 10px;
+      margin: 6px 0;
+      background: #333;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #playlist li:hover {
+      background: #444;
+    }
+    #playlist li.active {
+      background: #0a84ff;
+    }
+    /* Custom scrollbar for playlist (optional, looks nicer) */
+    #playlist::-webkit-scrollbar {
+      width: 6px;
+    }
+    #playlist::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 3px;
+    }
+    #playlist::-webkit-scrollbar-track {
+      background: #222;
+    }
+  </style>
+</head>
+<body>
+
+<div id="player-box">
+  <h2>ZaZaLex Amapiano Radio</h2>
+
+  <!-- Player with always-visible volume bar -->
+  <audio id="audio-player" controls></audio>
+
+  <!-- Playlist -->
+  <ul id="playlist"></ul>
+</div>
+
+<script>
+  // Your three tracks
+  const songs = [
+    {
+      title: "01 - ZaZaLex Mix 09.29.2022",
+      url: "https://archive.org/download/zazalex-amapiano-radio/01-ZaZaLex%20Mix%2009.29.2022.mp3"
+    },
+    {
+      title: "02 - ZaZaLex Mix 11.27.2022",
+      url: "https://archive.org/download/zazalex-amapiano-radio/02-ZaZaLex%20Mix%2011.27.2022.mp3"
+    },
+    {
+      title: "03 - ZaZaLex Mix 10.05.2022",
+      url: "https://archive.org/download/zazalex-amapiano-radio/03-ZaZaLex%20Mix%2010.05.2022.mp3"
+    }
+  ];
+
+  const audio = document.getElementById('audio-player');
+  const playlistEl = document.getElementById('playlist');
+
+  let currentTrack = 0;
+
+  function loadTrack(index) {
+    currentTrack = index;
+    audio.src = songs[index].url;
+    audio.play();
+
+    const items = playlistEl.querySelectorAll('li');
+    items.forEach((li, i) => {
+      if (i === index) {
+        li.classList.add('active');
+      } else {
+        li.classList.remove('active');
+      }
+    });
+  }
+
+  // Build playlist on the page
+  songs.forEach((song, index) => {
+    const li = document.createElement('li');
+    li.textContent = song.title;
+    li.addEventListener('click', () => {
+      loadTrack(index);
+    });
+    playlistEl.appendChild(li);
+  });
+
+  // When a track ends, play the next one
+  audio.addEventListener('ended', () => {
+    if (currentTrack < songs.length - 1) {
+      loadTrack(currentTrack + 1);
+    }
+  });
+
+  // Load first track when page opens
+  loadTrack(0);
+</script>
+
+</body>
+</html>
